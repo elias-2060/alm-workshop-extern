@@ -1,4 +1,23 @@
 ---
+# ImageStream: https://docs.openshift.com/container-platform/latest/openshift_images/image-streams-manage.html
+# In short: An ImageStream is an abstraction for referencing images within OpenShift. It can reference images from external registries like Quay.io.
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  name: alm-workshop
+  labels:
+    app: dev-alm-workshop-2025-app
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+    - name: latest
+      from:
+        kind: DockerImage
+        name: quay.io/elias2060/alm-workshop:latest
+      importPolicy:
+        scheduled: true
+---
 # Deployment: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
 # In short is an abstraction on top of Pods and you describe the desired state of your pods in it. The Deployment controller will make sure that state is met.
 kind: Deployment
@@ -23,8 +42,8 @@ spec:
     spec:
       containers:
         - name: workshop
-          image: quay.io/elias2060/alm-workshop:latest
-          imagePullPolicy: Always
+          image: alm-workshop:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
               protocol: TCP
