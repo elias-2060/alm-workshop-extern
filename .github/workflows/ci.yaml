@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - "**"
+  release:
+    types: [published]
 
 env:
   CONTAINER_REPOSITORY: elias2060 # PUT YOUR OWN USERNAME HERE
